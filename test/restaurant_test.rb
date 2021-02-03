@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './lib/restaurant'
 
+
 class RestaurantTest < Minitest::Test
   # Iteration 1 Tests:
   def test_it_exists
@@ -11,21 +12,21 @@ class RestaurantTest < Minitest::Test
   end
 
   def test_it_has_opening_time
-    skip
+    # skip
     restaurant = Restaurant.new('10:00', 'Fuel Cafe')
 
     assert_equal '10:00', restaurant.opening_time
   end
 
   def test_it_has_name
-    skip
+    # skip
     restaurant = Restaurant.new('10:00', 'Fuel Cafe')
 
     assert_equal 'Fuel Cafe', restaurant.name
   end
 
   def test_it_has_dishes
-    skip
+    # skip
     restaurant = Restaurant.new('10:00', 'Fuel Cafe')
 
     assert_equal [], restaurant.dishes
@@ -33,7 +34,7 @@ class RestaurantTest < Minitest::Test
 
   #Iteration 2 Tests:
   def test_it_has_closing_time
-    skip
+    # skip
     restaurant1 = Restaurant.new('10:00', 'Fuel Cafe')
     restaurant2 = Restaurant.new('16:00', 'Il Poggio')
 
@@ -42,7 +43,7 @@ class RestaurantTest < Minitest::Test
   end
 
   def test_it_can_add_dishes
-    skip
+    # skip
     restaurant = Restaurant.new('16:00', 'Il Poggio')
 
     restaurant.add_dish('Burrata')
@@ -51,4 +52,33 @@ class RestaurantTest < Minitest::Test
 
     assert_equal ['Burrata', 'Pizzetta', 'Ravioli'], restaurant.dishes
   end
+
+  def test_open_for_lunch_if_opening_time_is_before_1200
+    restaurant1 = Restaurant.new('10:00', 'Fuel Cafe')
+    restaurant2 = Restaurant.new('16:00', 'Il Poggio')
+
+    assert_equal true, restaurant1.open_for_lunch?
+    assert_equal false, restaurant2.open_for_lunch?
+  end
+
+  def test_menu_returns_all_caps_of_dish_array
+    restaurant = Restaurant.new('16:00', 'Il Poggio')
+
+    restaurant.add_dish('Burrata')
+    restaurant.add_dish('Pizzetta')
+    restaurant.add_dish('Ravioli')
+
+    dish = ['BURRATA', 'PIZZETTA', 'RAVIOLI']
+
+    assert_equal dish, restaurant.menu_dish_names
+  end
+
+  def test_announces_closing_time_in_12_hour_format
+    restaurant1 = Restaurant.new('6:00', 'Fuel Cafe')
+    restaurant2 = Restaurant.new('16:00', 'Il Posto')
+
+    assert_equal "Fuel Cafe will be closing at 11:00AM", restaurant1.announce_closing_time(5)
+    assert_equal "Il Posto will be closing at 11:00PM", restaurant2.announce_closing_time(7)
+  end
+
 end
